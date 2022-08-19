@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../Components/Footer';
 
 function Login() {
   return (
@@ -31,6 +32,7 @@ function Login() {
           Enter
         </button>
       </form>
+      <Footer />
     </div>
   );
 }
