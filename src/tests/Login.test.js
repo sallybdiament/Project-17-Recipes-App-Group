@@ -19,22 +19,22 @@ describe('Testes com o componente Login', () => {
     expect(loginBtn).toBeInTheDocument();
   });
   
-  it('Verifica se ao clicar no login-submit-btn é redirecionado para página /foods', () => {
-    const { history } = renderWithRouter(<App />);
-    // history.push('/');
+  // it('Verifica se ao clicar no login-submit-btn é redirecionado para página /foods', () => {
+  //   const { history } = renderWithRouter(<App />);
+  //   // history.push('/');
    
-    const testEmail = 'test@email.com';
-    const testPassword = '123456';
+  //   const testEmail = 'test@email.com';
+  //   const testPassword = '123456';
 
-    const emailInut = screen.getByTestId('email-input');
-    const passwordInput = screen.getByTestId('password-input');
+  //   const emailInut = screen.getByTestId('email-input');
+  //   const passwordInput = screen.getByTestId('password-input');
 
-    userEvent.type(emailInut, testEmail);
-    userEvent.type(passwordInput, testPassword);
+  //   userEvent.type(emailInut, testEmail);
+  //   userEvent.type(passwordInput, testPassword);
     
-    const loginBtn = screen.getByTestId('login-submit-btn');
-    userEvent.click(loginBtn);
-    const { pathname } = history.location;
-        expect(pathname).toBe('/foods');
-  });
+  //   const loginBtn = screen.getByTestId('login-submit-btn');
+  //   userEvent.click(loginBtn);
+  //   const { pathname } = history.location;
+  //       expect(pathname).toBe('/foods');
+  // });
 });

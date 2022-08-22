@@ -6,7 +6,7 @@ import App from "../App";
 import DoneRecipes from "../pages/DoneRecipes";
 
 describe('Testes com o componente DoneRecipes', () => {
-  it('Verifica se ao renderizar o componente DoneRecipes aparecem os inputs de email e senha', () => {
+  it('Verifica se ao renderizar o componente DoneRecipes aparecem o título Done Recipes', () => {
     renderWithRouter(<DoneRecipes />);
 
     const doneRecipesEl = screen.getByRole('heading', {  name: /done recipes/i})
@@ -17,11 +17,11 @@ describe('Testes com o componente DoneRecipes', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/done-recipes');
    
-    const mealIconEl = screen.getByTestId('food-bottom-btn');
-    expect (mealIconEl).toBeInTheDocument();
+    const profileIconEl = screen.getByRole('img', {  name: /ícone de perfil/i});
+    expect (profileIconEl).toBeInTheDocument();
 
-    userEvent.click(mealIconEl);
+    userEvent.click(profileIconEl);
     const { pathname } = history.location;
-        expect(pathname).toBe('/foods');
+        expect(pathname).toBe('/profile');
   });
 });

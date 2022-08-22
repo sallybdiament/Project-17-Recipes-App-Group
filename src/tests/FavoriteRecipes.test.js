@@ -6,7 +6,7 @@ import App from "../App";
 import FavoriteRecipes from "../pages/FavoriteRecipes";
 
 describe('Testes com o componente FavoriteRecipes', () => {
-  it('Verifica se ao renderizar o componente FavoriteRecipes aparecem os inputs de email e senha', () => {
+  it('Verifica se ao renderizar o componente FavoriteRecipes aparece o título Favorite Recipes', () => {
     renderWithRouter(<FavoriteRecipes />);
 
     const favoriteRecEl = screen.getByRole('heading', {  name: /favorite recipes/i})
@@ -17,11 +17,11 @@ describe('Testes com o componente FavoriteRecipes', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/favorite-recipes');
    
-    const mealIconEl = screen.getByTestId('food-bottom-btn');
-    expect (mealIconEl).toBeInTheDocument();
+    const profileIconEl = screen.getByRole('img', {  name: /ícone de perfil/i});
+    expect (profileIconEl).toBeInTheDocument();
 
-    userEvent.click(mealIconEl);
+    userEvent.click(profileIconEl);
     const { pathname } = history.location;
-        expect(pathname).toBe('/foods');
+        expect(pathname).toBe('/profile');
   });
 });
