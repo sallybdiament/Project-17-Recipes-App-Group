@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import userEvent from '@testing-library/user-event';
 import App from "../App";
 
-describe('Testes com o componente Footer', () => {
+describe('Testes com o componente Header', () => {
   it('Verifica se o Header é renderizado ', () => {
     renderWithRouter(<Header />);
 
@@ -24,7 +24,7 @@ describe('Testes com o componente Footer', () => {
     const profileIconEl = screen.getByTestId('profile-top-btn');
     expect (profileIconEl).toBeInTheDocument();
   });
-  it('Verifica se ao clicar no profile-top-btn é representado visualmente por imagem', () => {
+  it('Verifica se ao clicar no profile-top-btn é redirecionado para página /profile', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     const profileIconEl = screen.getByTestId('profile-top-btn');
