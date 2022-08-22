@@ -1,11 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
-import SearchBar from './SearchBar';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 export default function Header({ title }) {
+  const [isSearchInputOpened, toggleSearchInput] = useState(false);
+
   return (
     <div>
       <Link to="/profile">
@@ -16,13 +18,21 @@ export default function Header({ title }) {
         />
       </Link>
       {(title !== 'Profile'
-      && title !== 'Done Recipes'
-      && title !== 'Favorite Recipes')
-      && <img
-        src={ searchIcon }
-        data-testid="search-top-btn"
-        alt="Ícone de pesquisa"
-      />}
+        && title !== 'Done Recipes'
+        && title !== 'Favorite Recipes')
+        && (
+          <button
+            type="button"
+            onClick={ () => toggleSearchInput(!isSearchInputOpened) }
+          >
+            <img
+              src={ searchIcon }
+              data-testid="search-top-btn"
+              alt="Ícone de pesquisa"
+            />
+          </button>
+        )}
+      {isSearchInputOpened && <input data-testid="search-input" />}
       <h1 data-testid="page-title">{title}</h1>
       <SearchBar />
     </div>

@@ -1,35 +1,26 @@
 import React from "react";
 import { screen } from '@testing-library/react'
 import renderWithRouter from "./helpers/renderWithRouter";
+import userEvent from '@testing-library/user-event'
+
 import Header from "../components/Header";
-import userEvent from '@testing-library/user-event';
-import App from "../App";
 
-describe('Testes com o componente Header', () => {
-  it('Verifica se o Header é renderizado ', () => {
+describe('Testes do componente Header', () => {
+  it('Verifica se os elementos padrão são renderizados', () => {
     renderWithRouter(<Header />);
 
-    const headerProfileTopBtn = screen.getByTestId('profile-top-btn');
-    expect(headerProfileTopBtn).toBeInTheDocument();
+    const profileLink = screen.getByTestId('profile-top-btn');
+    const pageTitle = screen.getByTestId('page-title');
+
+    expect(profileLink).toBeInTheDocument();
+    expect(pageTitle).toBeInTheDocument();
   });
-  it('Verifica se ao renderizar, existe um componetes de Link', () => {
+
+  it('Verifica se o botão de pesquisa', async () => {
     renderWithRouter(<Header />);
 
-    const linksEl = screen.getAllByRole('link');
-    expect(linksEl).toHaveLength(1);
-  });
-  it('Verifica se o Link é representado visualmente por imagem', () => {
-    renderWithRouter(<Header />);
-
-    const profileIconEl = screen.getByTestId('profile-top-btn');
-    expect (profileIconEl).toBeInTheDocument();
-  });
-  it('Verifica se ao clicar no profile-top-btn é redirecionado para página /profile', () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/foods');
-    const profileIconEl = screen.getByTestId('profile-top-btn');
-    userEvent.click(profileIconEl);
-    const { pathname } = history.location;
-        expect(pathname).toBe('/profile');
+    const searchButton = screen.getByTestId('search-top-btn');
+    userEvent.click(searchButton);
+    expect(await screen.findByTestId('search-input')).toBeInTheDocument();
   });
 });
