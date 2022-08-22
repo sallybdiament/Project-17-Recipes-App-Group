@@ -24,4 +24,5 @@ describe('Testes com o componente Foods', () => {
   //   const { pathname } = history.location;
   //       expect(pathname).toBe('/drinks');
   // });
+  it('', () => {});
 });
