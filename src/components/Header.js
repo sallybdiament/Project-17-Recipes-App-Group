@@ -10,7 +10,6 @@ export default function Header({ title }) {
   const [isSearchInputOpened, toggleSearchInput] = useState(false);
 
   const { inputValue, setInputValue,
-    optionSearch,
   } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
@@ -47,7 +46,7 @@ export default function Header({ title }) {
         onChange={ handleChange }
       />}
       <h1 data-testid="page-title">{title}</h1>
-      <SearchBar />
+      <SearchBar pageName={ title } />
     </div>
   );
 }
