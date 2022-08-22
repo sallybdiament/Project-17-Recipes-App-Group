@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 export default function Header({ title }) {
   const [isSearchInputOpened, toggleSearchInput] = useState(false);
@@ -33,6 +34,7 @@ export default function Header({ title }) {
         )}
       {isSearchInputOpened && <input data-testid="search-input" />}
       <h1 data-testid="page-title">{title}</h1>
+      <SearchBar />
     </div>
   );
 }
