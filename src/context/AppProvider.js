@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { node } from 'prop-types';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
+  const [inputValue, setInputValue] = useState('');
+  const [optionSearch, setOptionSearch] = useState('');
+  const [recipes, setRecipes] = useState([]);
+
+  const contextValue = {
+    inputValue,
+    setInputValue,
+    optionSearch,
+    setOptionSearch,
+    recipes,
+    setRecipes,
+  };
+
   return (
-    <AppContext.Provider value={ {} }>
+    <AppContext.Provider
+      value={ contextValue }
+    >
       {children}
     </AppContext.Provider>
   );
