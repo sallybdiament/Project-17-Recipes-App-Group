@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import profileIcon from '../images/profileIcon.svg';
+import SearchBar from './SearchBar';
 
 export default function Header({ title }) {
   return (
@@ -19,6 +20,7 @@ export default function Header({ title }) {
         alt="Ícone de pesquisa"
       />}
       <h1 data-testid="page-title">{title}</h1>
+      <SearchBar />
     </div>
   );
 }
