@@ -27,6 +27,7 @@ function Login() {
         <button
           type="button"
           data-testid="login-submit-btn"
+          disabled="true"
         >
           Enter
         </button>
