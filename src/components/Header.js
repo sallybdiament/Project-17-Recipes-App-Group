@@ -9,8 +9,7 @@ import AppContext from '../context/AppContext';
 export default function Header({ title }) {
   const [isSearchInputOpened, toggleSearchInput] = useState(false);
 
-  const { inputValue, setInputValue,
-  } = useContext(AppContext);
+  const { inputValue, setInputValue } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
     setInputValue(target.value);
