@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Recipes from '../components/Recipes';
 
 export default function Drinks({ location }) {
   return (
@@ -10,6 +11,7 @@ export default function Drinks({ location }) {
       {location.pathname === '/drinks' && (
         <>
           <Header title="Drinks" />
+          <Recipes type="drinks" />
           <Footer />
         </>
       )}

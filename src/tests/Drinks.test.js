@@ -24,4 +24,6 @@ describe('Testes com o componente Drinks', () => {
   //   const { pathname } = history.location;
   //       expect(pathname).toBe('/profile');
   // });
+
+  it('', () => {});
 });
