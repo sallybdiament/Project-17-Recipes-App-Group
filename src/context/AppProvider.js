@@ -8,7 +8,7 @@ function AppProvider({ children }) {
   const [mealRecipes, setMealRecipes] = useState([]);
   const [drinksRecipes, setDrinksRecipes] = useState([]);
 
-  const [showCards, setShowCards] = useState(false);
+  // const [showCards, setShowCards] = useState(false);
 
   const contextValue = {
     inputValue,
@@ -19,8 +19,6 @@ function AppProvider({ children }) {
     setMealRecipes,
     drinksRecipes,
     setDrinksRecipes,
-    showCards,
-    setShowCards,
   };
 
   return (
