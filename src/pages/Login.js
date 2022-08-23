@@ -23,6 +23,12 @@ function Login() {
     setForm({ ...form, [name]: value });
   }
 
+  function submeter() {
+    localStorage.setItem('user', JSON.stringify({ email: form.email }));
+    localStorage.setItem('mealsToken', JSON.stringify(1));
+    localStorage.setItem('cocktailsToken', JSON.stringify(1));
+  }
+
   return (
     <div>
       <form>
@@ -56,6 +62,7 @@ function Login() {
           type="button"
           data-testid="login-submit-btn"
           disabled={ disabled }
+          onClick={ submeter }
         >
           Enter
         </button>
