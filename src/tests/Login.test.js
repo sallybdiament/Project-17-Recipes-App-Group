@@ -4,6 +4,7 @@ import renderWithRouter from "./helpers/renderWithRouter";
 import userEvent from '@testing-library/user-event';
 import App from "../App";
 import Login from "../pages/Login";
+import AppProvider from "../context/AppProvider";
 
 describe('Testes com o componente Login', () => {
   beforeEach(() => { const { history } =  renderWithRouter(

@@ -12,14 +12,11 @@ describe('Testes com o componente Foods', () => {
     <App />
     </AppProvider>);
     history.push('/foods');
-  
 })
   it('Verifica se ao renderizar o componente Foods aparece o título Foods', () => {
-
     const foodsEl = screen.getByRole('heading', {  name: /foods/i})
     expect(foodsEl).toBeInTheDocument();
   });
-  
   it('Verifica se o ícone de bebidas do footer aparece em /foods', () => {
     const drinkIconEl = screen.getByRole('img', {  name: /drink icon/i});
     expect (drinkIconEl).toBeInTheDocument();
