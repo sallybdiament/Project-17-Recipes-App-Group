@@ -6,8 +6,13 @@ import App from "../App";
 import Login from "../pages/Login";
 
 describe('Testes com o componente Login', () => {
+  beforeEach(() => { const { history } =  renderWithRouter(
+    <AppProvider>
+    <App />
+    </AppProvider>);
+    // history.push('/');
+})
   it('Verifica se ao renderizar o componente Login aparecem os inputs de email e senha', () => {
-    renderWithRouter(<Login />);
 
     const emailInut = screen.getByTestId('email-input');
     expect(emailInut).toBeInTheDocument();

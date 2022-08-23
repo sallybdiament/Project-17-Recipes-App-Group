@@ -17,9 +17,16 @@ describe('Testes com o componente Drinks', () => {
     const headingDrinkEl = screen.getByRole('heading', {  name: /drinks/i})
     expect(headingDrinkEl).toBeInTheDocument();
   });
-  
+});
+
+  describe('Testes com o componente Drinks', () => {
   it('Verifica se ao clicar no food-bottom-btn é redirecionado para página /foods', () => {
-   
+    const { history } =  renderWithRouter(
+      <AppProvider>
+      <App />
+      </AppProvider>);
+      history.push('/drinks');
+
     const profileIconEl = screen.getByRole('img', {  name: /ícone de perfil/i});
     expect (profileIconEl).toBeInTheDocument();
 

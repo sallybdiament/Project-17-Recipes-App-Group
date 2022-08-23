@@ -12,6 +12,7 @@ describe('Testes com o componente Foods', () => {
     <App />
     </AppProvider>);
     history.push('/foods');
+  
 })
   it('Verifica se ao renderizar o componente Foods aparece o título Foods', () => {
 
@@ -19,12 +20,25 @@ describe('Testes com o componente Foods', () => {
     expect(foodsEl).toBeInTheDocument();
   });
   
-  it('Verifica se ao clicar no drinks-bottom-btn é redirecionado para página /foods', () => {
+  it('Verifica se o ícone de bebidas do footer aparece em /foods', () => {
     const drinkIconEl = screen.getByRole('img', {  name: /drink icon/i});
     expect (drinkIconEl).toBeInTheDocument();
-
-    // userEvent.click(drinkIconEl);
-    // const { pathname } = history.location;
-    //     expect(pathname).toBe('/drinks');
   });
 });
+
+describe ('outros testes ', () => {
+it('Verifica se ao clicar no drinks-bottom-btn é redirecionado para página /foods', () => {
+  const { history } =  renderWithRouter(
+    <AppProvider>
+    <App />
+    </AppProvider>);
+    history.push('/foods');
+  
+  const drinkIconEl = screen.getByRole('img', {  name: /drink icon/i});
+  expect (drinkIconEl).toBeInTheDocument();
+
+  // userEvent.click(drinkIconEl);
+  // const { pathname } = history.location;
+  //     expect(pathname).toBe('/drinks');
+});
+})
