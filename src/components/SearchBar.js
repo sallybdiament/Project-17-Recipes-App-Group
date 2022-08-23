@@ -6,7 +6,7 @@ import foodAPI from '../services/foodAPI';
 
 function SearchBar({ pageName }) {
   const {
-    inputValue, optionSearch, setOptionSearch, setMealRecipes, setDrinksRecipes, history,
+    inputValue, optionSearch, setOptionSearch, setMealRecipes, setDrinksRecipes,
   } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
@@ -76,7 +76,6 @@ function SearchBar({ pageName }) {
   const handleClick = () => {
     if (pageName === 'Foods') {
       fetchMeals();
-      console.log(history);
       // checkRecipes();
     }
     if (pageName === 'Drinks') {
