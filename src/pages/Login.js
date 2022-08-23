@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function Login() {
   const [form, setForm] = useState({
@@ -7,6 +8,8 @@ function Login() {
   });
 
   const [disabled, setDisabled] = useState(true);
+
+  const history = useHistory();
 
   useEffect(() => {
     const emailValido = /\S+@\S+\.\S+/;
@@ -27,6 +30,7 @@ function Login() {
     localStorage.setItem('user', JSON.stringify({ email: form.email }));
     localStorage.setItem('mealsToken', JSON.stringify(1));
     localStorage.setItem('cocktailsToken', JSON.stringify(1));
+    history.push('/foods');
   }
 
   return (
