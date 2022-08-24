@@ -4,6 +4,27 @@ import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
 export default function DoneRecipes() {
+  // const doneRecipesLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
+  const doneRecipesLocalStorage = [{
+    id: '52768',
+    // idMeal
+    type: 'food',
+    nationality: 'British',
+    // strArea
+    category: 'Dessert',
+    // strCategory
+    alcoholicOrNot: '',
+    // strDrinkAlternate
+    name: 'Apple Frangipan Tart',
+    // strMeal
+    image: 'https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg',
+    // strMealThumb
+    doneDate: '2/2/22',
+    // "dateModified": null
+    tags: ['Tart', 'Baking', 'Fruity'],
+    // "strTags": "Tart,Baking,Fruity",
+  }];
+
   return (
     <div>
       <Header title="Done Recipes" />
@@ -25,14 +46,15 @@ export default function DoneRecipes() {
       >
         Drinks
       </button>
-      {recipes.map((recipe, index) => {
+      {doneRecipesLocalStorage.map((recipe, index) => {
         let link;
-        if (type === 'meals') link = '/foods/';
+        if (recipe.type === 'meals') link = '/foods/';
         else link = '/drinks/';
         return (
           <Link
-            to={ `${link}${recipe[recipeId]}` }
-            key={ recipe[recipeId] }
+            // to={ `${link}${recipe[id]}` }
+            to={ link }
+            key={ recipe.id }
             data-testid={ `${index}-recipe-card` }
           >
             <img
@@ -40,15 +62,17 @@ export default function DoneRecipes() {
               alt="Share Icon"
               data-testid={ `${index}-horizontal-share-btn` }
             />
-            <h1 data-testid={ `${index}-horizontal-top-text` }>Nome da categoria</h1>
-            <h1 data-testid={ `${index}-horizontal-name` }>{recipe[recipeName]}</h1>
+            <p data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</p>
+            <h1 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h1>
             <img
               data-testid={ `${index}-horizontal-image` }
-              alt={ recipe[recipeName] }
-              src={ recipe[recipeImage] }
+              alt={ recipe.name }
+              src={ recipe.image }
             />
-            <p data-testid={ `${index}-horizontal-done-date` }>Data</p>
-            <p data-testid={ `${index}-${tagName}-horizontal-tag` }>Tags</p>
+            <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+            { recipe.tags.map((tag, i) => (
+              <p key={ i } data-testid={ `${index}-${tag}-horizontal-tag` }>Tags</p>
+            ))}
           </Link>
         );
       })}
