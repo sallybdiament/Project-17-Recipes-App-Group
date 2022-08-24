@@ -1,18 +1,27 @@
 import React, { useContext } from 'react';
-import PropTypes, { func, number, objectOf, shape, string } from 'prop-types';
+import { string } from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 import AppContext from '../context/AppContext';
 import foodAPI from '../services/foodAPI';
 
-function SearchBar({ pageName, history }) {
+function SearchBar({ pageName }) {
+  const history = useHistory();
+
   const {
-    inputValue, setInputValue, optionSearch, setOptionSearch,
-    setMealRecipes, setDrinksRecipes,
+    inputValue,
+    setInputValue,
+    optionSearch,
+    setOptionSearch,
+    setMealRecipes,
+    setDrinksRecipes,
   } = useContext(AppContext);
 
-  const handleChange = ({ target }) => {
-    setOptionSearch(target.value);
-  };
+  const handleChange = ({ target }) => (
+    target.name === 'searchInput'
+      ? setInputValue(target.value)
+      : setOptionSearch(target.value)
+  );
 
   const checkRecipes = (recipesList) => {
     if (!recipesList) {
@@ -91,48 +100,68 @@ function SearchBar({ pageName, history }) {
   };
 
   return (
-    <div>
-      <input
-        type="radio"
-        name="searchBar"
-        value="ingredient"
-        onChange={ handleChange }
-        data-testid="ingredient-search-radio"
-      />
-      {' '}
-      Ingredient
-      <input
-        type="radio"
-        name="searchBar"
-        value="name"
-        onChange={ handleChange }
-        data-testid="name-search-radio"
-      />
-      {' '}
-      Name
-      <input
-        type="radio"
-        name="searchBar"
-        value="firstLetter"
-        onChange={ handleChange }
-        data-testid="first-letter-search-radio"
-      />
-      {' '}
-      First letter
-      <button
-        type="button"
-        data-testid="exec-search-btn"
-        onClick={ handleClick }
-      >
-        Search
-      </button>
+    <div className="search-container">
+      <section className="search-bar-container">
+        <input
+          className="search-bar"
+          name="searchInput"
+          data-testid="search-input"
+          value={ inputValue }
+          onChange={ handleChange }
+        />
+      </section>
+      <section className="search-btn-container">
+        <label htmlFor="radioSearchBtn">
+          <input
+            type="radio"
+            id="radioSearchBtn"
+            name="searchBar"
+            value="ingredient"
+            onChange={ handleChange }
+            data-testid="ingredient-search-radio"
+          />
+          {' '}
+          Ingredient
+        </label>
+        <label htmlFor="radioSearchBtn">
+          <input
+            type="radio"
+            id="radioSearchBtn"
+            name="searchBar"
+            value="name"
+            onChange={ handleChange }
+            data-testid="name-search-radio"
+          />
+          {' '}
+          Name
+        </label>
+        <label htmlFor="radioSearchBtn">
+          <input
+            type="radio"
+            id="radioSearchBtn"
+            name="searchBar"
+            value="firstLetter"
+            onChange={ handleChange }
+            data-testid="first-letter-search-radio"
+          />
+          {' '}
+          First letter
+        </label>
+        <button
+          className="search-btn"
+          type="button"
+          data-testid="exec-search-btn"
+          onClick={ handleClick }
+        >
+          Search
+        </button>
+      </section>
     </div>
   );
 }
 
 SearchBar.propTypes = {
-  pageName: PropTypes.string.isRequired,
-  history: shape(objectOf(func, string, number)).isRequired,
+  pageName: string.isRequired,
 };
 
 export default SearchBar;

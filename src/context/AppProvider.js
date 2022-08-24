@@ -3,6 +3,7 @@ import { node } from 'prop-types';
 import AppContext from './AppContext';
 
 function AppProvider({ children }) {
+  const [isSearchInputOpened, toggleSearchInput] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [optionSearch, setOptionSearch] = useState('');
   const [mealRecipes, setMealRecipes] = useState([]);
@@ -11,6 +12,8 @@ function AppProvider({ children }) {
   // const [showCards, setShowCards] = useState(false);
 
   const contextValue = {
+    isSearchInputOpened,
+    toggleSearchInput,
     inputValue,
     setInputValue,
     optionSearch,
