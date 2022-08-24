@@ -27,8 +27,6 @@ describe('Testes com o componente Login', () => {
   });
   
    it('Verifica se ao clicar no login-submit-btn é redirecionado para página /foods', () => {
-     const { history } = renderWithRouter(<App />);
-     history.push('/');
    
      const testEmail = 'test@email.com';
      const testPassword = '123456';
