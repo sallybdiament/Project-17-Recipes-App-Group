@@ -23,24 +23,33 @@ describe('Testes com o componente Login', () => {
 
     const loginBtn = screen.getByTestId('login-submit-btn');
     expect(loginBtn).toBeInTheDocument();
+    
   });
   
-  // it('Verifica se ao clicar no login-submit-btn é redirecionado para página /foods', () => {
-  //   const { history } = renderWithRouter(<App />);
-  //   // history.push('/');
+   it('Verifica se ao clicar no login-submit-btn é redirecionado para página /foods', () => {
+     const { history } = renderWithRouter(<App />);
+     history.push('/');
    
-  //   const testEmail = 'test@email.com';
-  //   const testPassword = '123456';
+     const testEmail = 'test@email.com';
+     const testPassword = '123456';
 
-  //   const emailInut = screen.getByTestId('email-input');
-  //   const passwordInput = screen.getByTestId('password-input');
+     const emailInut = screen.getByTestId('email-input');
+     const passwordInput = screen.getByTestId('password-input');
+     const loginBtn = screen.getByTestId('login-submit-btn');
+     expect(loginBtn).toBeDisabled();
 
-  //   userEvent.type(emailInut, testEmail);
-  //   userEvent.type(passwordInput, testPassword);
+
+     userEvent.type(emailInut, 'linda.com');
+     userEvent.type(passwordInput, testPassword);
+     expect(loginBtn).toBeDisabled();
+
+     userEvent.type(emailInut, testEmail);
+     userEvent.type(passwordInput, testPassword);
+     expect(loginBtn).not.toBeDisabled();
     
-  //   const loginBtn = screen.getByTestId('login-submit-btn');
-  //   userEvent.click(loginBtn);
-  //   const { pathname } = history.location;
-  //       expect(pathname).toBe('/foods');
-  // });
+     
+     userEvent.click(loginBtn);
+     const { pathname } = history.location;
+         expect(pathname).toBe('/foods');
+   });
 });
