@@ -4,10 +4,15 @@ import renderWithRouter from "./helpers/renderWithRouter";
 import userEvent from '@testing-library/user-event';
 import App from "../App";
 import FavoriteRecipes from "../pages/FavoriteRecipes";
+import AppProvider from "../context/AppProvider";
 
 describe('Testes com o componente FavoriteRecipes', () => {
   it('Verifica se ao renderizar o componente FavoriteRecipes aparece o título Favorite Recipes', () => {
-    renderWithRouter(<FavoriteRecipes />);
+    const { history } =  renderWithRouter(
+      <AppProvider>
+      <App />
+      </AppProvider>);
+      history.push('/favorite-recipes');
 
     const favoriteRecEl = screen.getByRole('heading', {  name: /favorite recipes/i})
     expect(favoriteRecEl).toBeInTheDocument();
