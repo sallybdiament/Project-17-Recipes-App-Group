@@ -12,7 +12,7 @@ describe('Testes com o componente Login', () => {
     <App />
     </AppProvider>);
     // history.push('/');
-})
+  })
   it('Verifica se ao renderizar o componente Login aparecem os inputs de email e senha', () => {
 
     const emailInut = screen.getByTestId('email-input');
