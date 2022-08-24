@@ -5,6 +5,7 @@ import AppContext from '../context/AppContext';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import Footer from '../components/Footer';
+import Recipes from '../components/Recipes';
 
 const NUMBER_TWELVE = 12;
 export default function Drinks({ location, history }) {
@@ -23,6 +24,7 @@ export default function Drinks({ location, history }) {
               image={ strDrinkThumb }
             />
           ))}
+          <Recipes type="drinks" />
           <Footer />
         </>
       )}

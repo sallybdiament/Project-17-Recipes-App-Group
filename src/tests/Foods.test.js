@@ -24,18 +24,18 @@ describe('Testes com o componente Foods', () => {
 });
 
 describe ('outros testes ', () => {
-it('Verifica se ao clicar no drinks-bottom-btn é redirecionado para página /foods', () => {
-  const { history } =  renderWithRouter(
-    <AppProvider>
-    <App />
-    </AppProvider>);
-    history.push('/foods');
-  
-  const drinkIconEl = screen.getByRole('img', {  name: /drink icon/i});
-  expect (drinkIconEl).toBeInTheDocument();
+  it('Verifica se ao clicar no drinks-bottom-btn é redirecionado para página /foods', () => {
+    const { history } =  renderWithRouter(
+      <AppProvider>
+      <App />
+      </AppProvider>);
+      history.push('/foods');
 
-  // userEvent.click(drinkIconEl);
-  // const { pathname } = history.location;
-  //     expect(pathname).toBe('/drinks');
+    const drinkIconEl = screen.getByRole('img', {  name: /drink icon/i});
+    expect (drinkIconEl).toBeInTheDocument();
+
+    userEvent.click(drinkIconEl);
+    const { pathname } = history.location;
+    expect(pathname).toBe('/drinks');
+  });
 });
-})

@@ -12,7 +12,7 @@ describe('Testes com o componente Drinks', () => {
     <App />
     </AppProvider>);
     history.push('/drinks');
-})
+  })
   it('Verifica se ao renderizar o componente Drinks aparece o título Drinks', () => {
     const headingDrinkEl = screen.getByRole('heading', {  name: /drinks/i})
     expect(headingDrinkEl).toBeInTheDocument();
@@ -48,11 +48,11 @@ describe('Testes com o componente Drinks', () => {
       </AppProvider>);
       history.push('/drinks');
 
-      const foodIconEl = screen.getByRole('img', {  name: /meal icon/i});
+    const foodIconEl = screen.getByRole('img', {  name: /meal icon/i});
     expect (foodIconEl).toBeInTheDocument();
 
     userEvent.click(foodIconEl);
     const { pathname } = history.location;
-        expect(pathname).toBe('/foods');
+    expect(pathname).toBe('/foods');
   });
 });
