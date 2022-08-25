@@ -5,23 +5,12 @@ import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 import favoriteIcon from '../images/blackHeartIcon.svg';
 
-/*
-[{
-    id: id-da-receita,
-    type: food-ou-drink,
-    nationality: nacionalidade-da-receita-ou-texto-vazio,
-    category: categoria-da-receita-ou-texto-vazio,
-    alcoholicOrNot: alcoholic-ou-non-alcoholic-ou-texto-vazio,
-    name: nome-da-receita,
-    image: imagem-da-receita
-}]
-*/
-
 export default function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
 
   useEffect(() => {
-    setFavoriteRecipes(JSON.parse(localStorage.getItem('favoriteRecipes')));
+    const previousFavoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (previousFavoriteRecipes) setFavoriteRecipes(previousFavoriteRecipes);
   }, []);
 
   const unfavorite = (recipe) => {
@@ -63,7 +52,7 @@ export default function FavoriteRecipes() {
       >
         All
       </button>
-      {favoriteRecipes.map((recipe, index) => (
+      {favoriteRecipes.length !== 0 && favoriteRecipes.map((recipe, index) => (
         <div key={ recipe.id }>
           <Link to={ `/${recipe.type}s/${recipe.id}` }>
             <h1 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h1>

@@ -28,7 +28,6 @@ const favoriteRecipes = JSON.stringify([
 ]);
 
 describe('Testes com o componente FavoriteRecipes', () => {
-  localStorage.setItem('favoriteRecipes', favoriteRecipes);
   it('Verifica se ao renderizar o componente FavoriteRecipes aparece o título Favorite Recipes', () => {
     const { history } =  renderWithRouter(
       <AppProvider>
@@ -53,6 +52,7 @@ describe('Testes com o componente FavoriteRecipes', () => {
   });
 
   it('Verifica "unfavorite button"', async () => {
+    localStorage.setItem('favoriteRecipes', favoriteRecipes);
     const { history } = renderWithRouter(<App />);
     history.push('/favorite-recipes');
 
@@ -64,6 +64,7 @@ describe('Testes com o componente FavoriteRecipes', () => {
   });
 
   it('Verifica o filtro "food"', async () => {
+    localStorage.setItem('favoriteRecipes', favoriteRecipes);
     const { history } = renderWithRouter(<App />);
     history.push('/favorite-recipes');
 
@@ -75,6 +76,7 @@ describe('Testes com o componente FavoriteRecipes', () => {
   });
 
   it('Verifica o filtro "drink"', async () => {
+    localStorage.setItem('favoriteRecipes', favoriteRecipes);
     const { history } = renderWithRouter(<App />);
     history.push('/favorite-recipes');
 
@@ -86,6 +88,7 @@ describe('Testes com o componente FavoriteRecipes', () => {
   });
 
   it('Verifica o filtro "all"', async () => {
+    localStorage.setItem('favoriteRecipes', favoriteRecipes);
     const { history } = renderWithRouter(<App />);
     history.push('/favorite-recipes');
 
@@ -94,5 +97,13 @@ describe('Testes com o componente FavoriteRecipes', () => {
 
     const recipesTitles = await screen.findAllByTestId(/-horizontal-name/);
     expect(recipesTitles.length).toBe(2);
+  });
+
+  it('Verifica caso o localStorage esteja vazio', async () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/favorite-recipes');
+
+    const recipesTitles = await screen.queryByTestId('0-horizontal-name');
+    expect(recipesTitles).not.toBeInTheDocument();
   });
 });
