@@ -48,6 +48,9 @@ import AppProvider from "../context/AppProvider";
 
 describe('Testes com o componente DoneRecipes', () => {
   localStorage.setItem('doneRecipes', doneRecipes);
+  // global.copy = jest.fn(() => Promise.resolve({
+  //   json: () => Promise.resolve(),
+  // }));
   it('Verifica se ao renderizar o componente DoneRecipes aparecem o título Done Recipes', () => {
     const { history } =  renderWithRouter(
       <AppProvider>
@@ -110,11 +113,14 @@ describe('Testes com o componente DoneRecipes', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/done-recipes');
 
-    const copyIcon = await screen.findByTestId(/-horizontal-share-btn/);
-    userEvent.click(copyIcon);
+    const copyIcon = await screen.findAllByRole('img', {  name: /share button/i})
+    userEvent.click(copyIcon[0]);
 
-    const linkCopiedText = screen.getByRole('button', {  name: /link copied!/i})
+
+    // const linkCopiedText = await screen.findByRole('button', {  name: /link copied!/i})
+    const linkCopiedText = await screen.findByText(/link copied/i)
     expect(linkCopiedText).toBeInTheDocument();
+    // expect(global.copy).toHaveBeenCalled(1);
   });
 });
 

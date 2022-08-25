@@ -8,7 +8,7 @@ export default function DoneRecipes() {
   const numberThree = 3;
   const [doneRecipes, setDoneRecipes] = useState([]);
 
-  //   const doneRecipesMock = [{
+  // const doneRecipesMock = [{
   //   id: '52768',
   //   // idMeal
   //   type: 'food',
@@ -69,7 +69,7 @@ export default function DoneRecipes() {
       {doneRecipes.map((recipe, index) => (
         <div key={ recipe.id }>
           <Link
-            to={ `${recipe.type}s${recipe.id}` }
+            to={ `/${recipe.type}s/${recipe.id}` }
             // key={ recipe.id }
             // data-testid={ `${index}-recipe-card` }
           >
@@ -83,7 +83,6 @@ export default function DoneRecipes() {
           <button
             type="button"
             onClick={ ({ target }) => {
-              console.log(target);
               target.innerHTML = 'Link copied!';
               copy(`http://localhost:3000/${recipe.type}s/${recipe.id}`);
             } }
