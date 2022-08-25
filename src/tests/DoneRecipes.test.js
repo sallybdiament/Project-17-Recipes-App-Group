@@ -122,6 +122,15 @@ describe('Testes com o componente DoneRecipes', () => {
     expect(linkCopiedText).toBeInTheDocument();
     // expect(global.copy).toHaveBeenCalled(1);
   });
+
+  it('Verifica caso o localStorage esteja vazio', async () => {
+    localStorage.removeItem('doneRecipes');
+    const { history } = renderWithRouter(<App />);
+    history.push('/done-recipes');
+
+    const recipesTitles = await screen.queryByTestId('0-horizontal-name');
+    expect(recipesTitles).not.toBeInTheDocument();
+  });
 });
 
 

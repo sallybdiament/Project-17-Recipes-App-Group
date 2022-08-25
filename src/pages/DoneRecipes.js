@@ -8,29 +8,9 @@ export default function DoneRecipes() {
   const numberThree = 3;
   const [doneRecipes, setDoneRecipes] = useState([]);
 
-  // const doneRecipesMock = [{
-  //   id: '52768',
-  //   // idMeal
-  //   type: 'food',
-  //   nationality: 'British',
-  //   // strArea
-  //   category: 'Dessert',
-  //   // strCategory
-  //   alcoholicOrNot: '',
-  //   // strDrinkAlternate
-  //   name: 'Apple Frangipan Tart',
-  //   // strMeal
-  //   image: 'https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg',
-  //   // strMealThumb
-  //   doneDate: '2/2/22',
-  //   // "dateModified": null
-  //   tags: ['Tart', 'Baking', 'Fruity'],
-  //   // "strTags": "Tart,Baking,Fruity",
-  // }];
-
   useEffect(() => {
-    setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
-    // setDoneRecipes(doneRecipesMock);
+    const recipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (recipes) setDoneRecipes(recipes);
   }, []);
 
   const setFilter = (criteria) => {
