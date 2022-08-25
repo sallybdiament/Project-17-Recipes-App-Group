@@ -1,33 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { CopyToClipboard } from 'react-copy-to-clipboard';
+import copy from 'clipboard-copy';
 import Header from '../components/Header';
-// https://www.npmjs.com/package/react-hook-clipboard
-// import useClipboard from 'react-hook-clipboard'
 import shareIcon from '../images/shareIcon.svg';
 
 export default function DoneRecipes() {
-  // const doneRecipesLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
   const numberThree = 3;
-  const doneRecipesLocalStorage = [{
-    id: '52768',
-    // idMeal
-    type: 'food',
-    nationality: 'British',
-    // strArea
-    category: 'Dessert',
-    // strCategory
-    alcoholicOrNot: '',
-    // strDrinkAlternate
-    name: 'Apple Frangipan Tart',
-    // strMeal
-    image: 'https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg',
-    // strMealThumb
-    doneDate: '2/2/22',
-    // "dateModified": null
-    tags: ['Tart', 'Baking', 'Fruity'],
-    // "strTags": "Tart,Baking,Fruity",
-  }];
+  const [doneRecipes, setDoneRecipes] = useState([]);
+
+  //   const doneRecipesMock = [{
+  //   id: '52768',
+  //   // idMeal
+  //   type: 'food',
+  //   nationality: 'British',
+  //   // strArea
+  //   category: 'Dessert',
+  //   // strCategory
+  //   alcoholicOrNot: '',
+  //   // strDrinkAlternate
+  //   name: 'Apple Frangipan Tart',
+  //   // strMeal
+  //   image: 'https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg',
+  //   // strMealThumb
+  //   doneDate: '2/2/22',
+  //   // "dateModified": null
+  //   tags: ['Tart', 'Baking', 'Fruity'],
+  //   // "strTags": "Tart,Baking,Fruity",
+  // }];
+
+  useEffect(() => {
+    setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
+    // setDoneRecipes(doneRecipesMock);
+  }, []);
+
+  const setFilter = (criteria) => {
+    let filteredDoneRecipes;
+    if (criteria !== 'all') {
+      filteredDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes'))
+        .filter((recipe) => recipe.type === criteria);
+    } else filteredDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    setDoneRecipes(filteredDoneRecipes);
+  };
 
   return (
     <div>
@@ -35,64 +48,65 @@ export default function DoneRecipes() {
       <button
         type="button"
         data-testid="filter-by-all-btn"
+        onClick={ () => setFilter('all') }
       >
         All
       </button>
       <button
         type="button"
         data-testid="filter-by-food-btn"
+        onClick={ () => setFilter('food') }
       >
         Food
       </button>
       <button
         type="button"
         data-testid="filter-by-drink-btn"
+        onClick={ () => setFilter('drink') }
       >
         Drinks
       </button>
-      {doneRecipesLocalStorage.map((recipe, index) => {
-        let link;
-        if (recipe.type === 'meals') link = '/foods/';
-        else link = '/drinks/';
-        return (
-          <div key={ recipe.id }>
-            <button
-              type="button"
-              onClick={ () => copy('A') }
-            >
-              <img
-                src={ shareIcon }
-                alt="Share Icon"
-                data-testid={ `${index}-horizontal-share-btn` }
-              />
-            </button>
-            <p
-              data-testid={ `${index}-horizontal-top-text` }
-            >
-              { `${recipe.nationality} - ${recipe.category} - ${recipe.alcoholicOrNot}`}
+      {doneRecipes.map((recipe, index) => (
+        <div key={ recipe.id }>
+          <Link
+            to={ `${recipe.type}s${recipe.id}` }
+            // key={ recipe.id }
+            // data-testid={ `${index}-recipe-card` }
+          >
+            <h1 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h1>
+            <img
+              data-testid={ `${index}-horizontal-image` }
+              alt={ recipe.name }
+              src={ recipe.image }
+            />
+          </Link>
+          <button
+            type="button"
+            onClick={ ({ target }) => {
+              console.log(target);
+              target.innerHTML = 'Link copied!';
+              copy(`http://localhost:3000/${recipe.type}s/${recipe.id}`);
+            } }
+          >
+            <img
+              alt="Share Button"
+              src={ shareIcon }
+              data-testid={ `${index}-horizontal-share-btn` }
+            />
+          </button>
+          <p
+            data-testid={ `${index}-horizontal-top-text` }
+          >
+            { `${recipe.nationality} - ${recipe.category} - ${recipe.alcoholicOrNot}`}
 
-            </p>
-            <Link
-              to={ `${link}${recipe.id}` }
-              // to={ link }
-              key={ recipe.id }
-              data-testid={ `${index}-recipe-card` }
-            >
-              <h1 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h1>
-              <img
-                data-testid={ `${index}-horizontal-image` }
-                alt={ recipe.name }
-                src={ recipe.image }
-              />
-            </Link>
-            <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
-            { recipe.tags.map((tag, i) => (
-              index < numberThree
+          </p>
+          <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+          { recipe.tags.map((tag, i) => (
+            index < numberThree
               && <p key={ i } data-testid={ `${index}-${tag}-horizontal-tag` }>{tag}</p>
-            ))}
-          </div>
-        );
-      })}
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
