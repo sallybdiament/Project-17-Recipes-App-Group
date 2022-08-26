@@ -52,7 +52,7 @@ export default function FavoriteRecipes() {
       >
         All
       </button>
-      {favoriteRecipes.length !== 0 && favoriteRecipes.map((recipe, index) => (
+      {favoriteRecipes.map((recipe, index) => (
         <div key={ recipe.id }>
           <Link to={ `/${recipe.type}s/${recipe.id}` }>
             <h1 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h1>
