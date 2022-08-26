@@ -7,8 +7,8 @@ export default function Profile() {
   const [email, setEmail] = useState('');
 
   function recuperaEmail() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    setEmail(user.email);
+    const userEmail = JSON.parse(localStorage.getItem('user'));
+    setEmail(userEmail);
   }
 
   useEffect(() => {
@@ -25,11 +25,16 @@ export default function Profile() {
     history.push('/favorite-recipes');
   }
 
+  function btnThree() {
+    history.push('/');
+    localStorage.clear();
+  }
+
   return (
     <div>
       <Header title="Profile" />
       <div>
-        <p data-testid="profile-email">{email}</p>
+        <p data-testid="profile-email">{email.email}</p>
         <button
           type="button"
           data-testid="profile-done-btn"
@@ -47,6 +52,7 @@ export default function Profile() {
         <button
           type="button"
           data-testid="profile-logout-btn"
+          onClick={ btnThree }
         >
           Logout
         </button>
