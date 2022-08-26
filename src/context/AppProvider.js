@@ -8,7 +8,6 @@ function AppProvider({ children }) {
   const [optionSearch, setOptionSearch] = useState('');
   const [mealRecipes, setMealRecipes] = useState([]);
   const [drinksRecipes, setDrinksRecipes] = useState([]);
-
   // const [showCards, setShowCards] = useState(false);
 
   const contextValue = {

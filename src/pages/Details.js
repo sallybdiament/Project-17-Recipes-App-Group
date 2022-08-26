@@ -1,24 +1,17 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+
 import Header from '../components/Header';
-import Footer from '../components/Footer';
 import RecipesDetails from '../components/RecipeDetails';
+import Footer from '../components/Footer';
 
-export default function Drinks(history) {
-  const { location } = history;
+export default function Drinks() {
+  const { pathname } = useLocation();
   return (
-
     <div>
-
       <Header title="Details" />
-      <RecipesDetails
-        history={ history }
-        type={ location.pathname.includes('drinks') ? 'drinks' : 'meals' }
-      />
+      <RecipesDetails type={ pathname.includes('drinks') ? 'drinks' : 'meals' } />
       <Footer />
-      {/* {location.pathname === '/drinks' && (
-        <>
-        </>
-      )} */}
     </div>
   );
 }

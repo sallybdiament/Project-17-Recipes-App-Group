@@ -1,25 +1,26 @@
-const fetchDetails = async (type, _id) => {
-  let resp = null;
+export const fetchRecipeDetails = async (type, id) => {
+  let response = null;
+
   if (type.includes('drinks')) {
-    resp = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${_id}`);
+    response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
   } else {
-    resp = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${_id}`);
+    response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
   }
-  const data = resp ? await resp.json() : null;
-  return data[type][0];
+
+  const detailsData = response ? await response.json() : null;
+  return detailsData[type][0];
 };
 
-const fetchRecommended = async (type) => {
-  let resp = null;
+export const fetchRecommendedRecipes = async (type) => {
+  let response = null;
   const recommendListSize = 6;
   if (type.includes('drinks')) {
-    resp = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
     type = 'meals';
   } else {
-    resp = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
     type = 'drinks';
   }
-  const data = await resp.json();
+  const data = await response.json();
   return data[type].slice(0, recommendListSize);
 };
-export { fetchDetails, fetchRecommended };
