@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
 import { useRouteMatch } from 'react-router-dom';
 import { string } from 'prop-types';
-import AliceCarousel from 'react-alice-carousel';
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import { fetchRecipeDetails, fetchRecommendedRecipes } from '../services/fetchDetailsAPI';
 import '../styles/RecipeDetails.css';
-import 'react-alice-carousel/lib/alice-carousel.css';
-
-import RecommendedCard from './RecommendedCard';
 
 export default function RecipeDetails({ type }) {
   const { params: { id } } = useRouteMatch();
@@ -41,17 +39,6 @@ export default function RecipeDetails({ type }) {
     getRecipeDetails();
     getRecommendedRecipes();
   }, [getRecipeDetails, getRecommendedRecipes]);
-
-  const recommendedCars = recommendedRecipes
-    .map(({ [recommendedName]: name, [recommendedImage]: image }, index) => (
-      <RecommendedCard key={ index } name={ name } image={ image } index={ index } />
-    ));
-
-  const responsive = {
-    0: { items: 2 },
-    568: { items: 2 },
-    1024: { items: 3 },
-  };
 
   return (
     <div className="details">
@@ -97,12 +84,24 @@ export default function RecipeDetails({ type }) {
           allowFullScreen
         />
       )}
-      <AliceCarousel
-        autoHeight
-        mouseTracking
-        items={ recommendedCars }
-        responsive={ responsive }
-      />
+      <Splide
+        className="splide"
+        options={ {
+          rewind: true,
+          perPage: 2,
+          gap: 10,
+        } }
+      >
+        {recommendedRecipes
+          .map(({ [recommendedImage]: image, [recommendedName]: name }, index) => (
+            <SplideSlide key={ index } data-testid={ `${index}-recomendation-card` }>
+              <img src={ image } alt={ name } />
+              <div>
+                <p data-testid={ `${index}-recomendation-title` }>{name}</p>
+              </div>
+            </SplideSlide>
+          ))}
+      </Splide>
     </div>
   );
 }
