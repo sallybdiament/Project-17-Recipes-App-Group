@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
-import { useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { string } from 'prop-types';
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import { fetchRecipeDetails, fetchRecommendedRecipes } from '../services/fetchDetailsAPI';
 import '../styles/RecipeDetails.css';
 
 export default function RecipeDetails({ type }) {
-  const { params: { id } } = useRouteMatch();
+  const { params: { id }, url } = useRouteMatch();
+  const history = useHistory();
   const [recipeDetails, setRecipeDetails] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
@@ -49,7 +50,6 @@ export default function RecipeDetails({ type }) {
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
     const inProgressList = inProgressRecipes && inProgressRecipes[mealOrCocktail];
     const keys = inProgressList && Object.keys(inProgressRecipes[mealOrCocktail]);
-    console.log(keys);
     const recipeIsInProgress = keys && keys.some((key) => key === id);
     setIsInProgress(recipeIsInProgress);
   }, [id, type]);
@@ -130,6 +130,7 @@ export default function RecipeDetails({ type }) {
         <button
           type="button"
           className="start-recipe-btn"
+          onClick={ () => history.push(`${url}/in-progress`) }
           data-testid="start-recipe-btn"
         >
           Start Recipe
