@@ -1,3 +1,5 @@
-body {
-  overflow-x: hidden;
+.start-recipe-btn {
+  bottom: 0;
+  position: fixed;
+  z-index: 9;
 }

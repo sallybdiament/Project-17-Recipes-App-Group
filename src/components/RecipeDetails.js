@@ -13,6 +13,8 @@ export default function RecipeDetails({ type }) {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [recommendedRecipes, setRecommendedRecipes] = useState([]);
+  const [startBtnIsEnable, setStartBtnIsEnable] = useState(true);
+  const [isInProgress, setIsInProgress] = useState(false);
 
   const imagePlaceHolder = type === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
   const namePlaceHolder = type === 'drinks' ? 'strDrink' : 'strMeal';
@@ -35,10 +37,32 @@ export default function RecipeDetails({ type }) {
     setRecommendedRecipes(recommendedRecipesList);
   }, [type]);
 
+  const startBtnIsEnableFunc = useCallback(() => {
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    const recipeIsDone = doneRecipes && doneRecipes
+      .some((recipe) => recipe.id === id);
+    setStartBtnIsEnable(!recipeIsDone);
+  }, [id]);
+
+  const continueRecipeBtnVerify = useCallback(async () => {
+    const mealOrCocktail = type === 'drinks' ? 'cocktails' : 'meals';
+    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const inProgressList = inProgressRecipes && inProgressRecipes[mealOrCocktail];
+    const keys = inProgressList && Object.keys(inProgressRecipes[mealOrCocktail]);
+    console.log(keys);
+    const recipeIsInProgress = keys && keys.some((key) => key === id);
+    setIsInProgress(recipeIsInProgress);
+  }, [id, type]);
+
   useEffect(() => {
     getRecipeDetails();
     getRecommendedRecipes();
-  }, [getRecipeDetails, getRecommendedRecipes]);
+    startBtnIsEnableFunc();
+    continueRecipeBtnVerify();
+  }, [
+    getRecipeDetails, getRecommendedRecipes,
+    startBtnIsEnableFunc, continueRecipeBtnVerify,
+  ]);
 
   return (
     <div className="details">
@@ -102,6 +126,26 @@ export default function RecipeDetails({ type }) {
             </SplideSlide>
           ))}
       </Splide>
+      { startBtnIsEnable && (
+        <button
+          type="button"
+          className="start-recipe-btn"
+          data-testid="start-recipe-btn"
+        >
+          Start Recipe
+
+        </button>
+      )}
+      { isInProgress && (
+        <button
+          type="button"
+          className="start-recipe-btn"
+          data-testid="start-recipe-btn"
+        >
+          Continue Recipe
+
+        </button>
+      )}
     </div>
   );
 }

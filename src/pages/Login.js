@@ -30,6 +30,10 @@ function Login() {
     localStorage.setItem('user', JSON.stringify({ email: form.email }));
     localStorage.setItem('mealsToken', JSON.stringify(1));
     localStorage.setItem('cocktailsToken', JSON.stringify(1));
+    localStorage.setItem('doneRecipes', JSON.stringify([]));
+    localStorage.setItem('inProgressRecipes', JSON.stringify({
+      cocktails: {}, meals: {},
+    }));
     history.push('/foods');
   }
 
