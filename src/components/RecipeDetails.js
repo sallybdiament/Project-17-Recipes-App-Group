@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { string } from 'prop-types';
+import Button from 'react-bootstrap/Button';
+import Overlay from 'react-bootstrap/Overlay';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import { fetchRecipeDetails, fetchRecommendedRecipes } from '../services/fetchDetailsAPI';
@@ -9,6 +12,8 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import '../styles/RecipeDetails.css';
 import '@splidejs/react-splide/css';
+
+const copy = require('clipboard-copy');
 
 export default function RecipeDetails({ type }) {
   const { params: { id }, url } = useRouteMatch();
@@ -19,6 +24,8 @@ export default function RecipeDetails({ type }) {
   const [recommendedRecipes, setRecommendedRecipes] = useState([]);
   const [startBtnIsEnable, setStartBtnIsEnable] = useState(true);
   const [isInProgress, setIsInProgress] = useState(false);
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   const imagePlaceHolder = type === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
   const namePlaceHolder = type === 'drinks' ? 'strDrink' : 'strMeal';
@@ -67,6 +74,11 @@ export default function RecipeDetails({ type }) {
     startBtnIsEnableFunc, continueRecipeBtnVerify,
   ]);
 
+  const onCopy = () => {
+    copy(`http://localhost:3000${url}`);
+    setShow(!show);
+  };
+
   return (
     <div className="details">
       <img
@@ -85,9 +97,19 @@ export default function RecipeDetails({ type }) {
               { recipeDetails.strCategory }
             </p>
           )}
-        <button type="button" data-testid="share-btn">
+        <Button
+          ref={ target }
+          variant="outline-success"
+          data-testid="share-btn"
+          onClick={ () => onCopy() }
+        >
           <img src={ shareIcon } alt="Share icon" />
-        </button>
+        </Button>
+        <Overlay target={ target.current } show={ show } placement="bottom">
+          <Tooltip id="overlay-example">
+            Link copied!
+          </Tooltip>
+        </Overlay>
         <button type="button" data-testid="favorite-btn">
           <img src={ whiteHeartIcon } alt="Favorite Icon" />
         </button>
