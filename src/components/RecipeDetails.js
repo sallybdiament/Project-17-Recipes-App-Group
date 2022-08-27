@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/react-splide/css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { string } from 'prop-types';
+
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import { fetchRecipeDetails, fetchRecommendedRecipes } from '../services/fetchDetailsAPI';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import '../styles/RecipeDetails.css';
+import '@splidejs/react-splide/css';
 
 export default function RecipeDetails({ type }) {
   const { params: { id }, url } = useRouteMatch();
@@ -71,16 +74,25 @@ export default function RecipeDetails({ type }) {
         alt={ recipeDetails[namePlaceHolder] }
         data-testid="recipe-photo"
       />
-      <h1 data-testid="recipe-title">{ recipeDetails[namePlaceHolder] }</h1>
-      {type === 'drinks'
-        ? <p data-testid="recipe-category">{recipeDetails.strAlcoholic}</p>
-        : (
-          <p data-testid="recipe-category">
-            Categoria:
-            {' '}
-            { recipeDetails.strCategory }
-          </p>
-        )}
+      <section>
+        <h1 data-testid="recipe-title">{ recipeDetails[namePlaceHolder] }</h1>
+        {type === 'drinks'
+          ? <p data-testid="recipe-category">{recipeDetails.strAlcoholic}</p>
+          : (
+            <p data-testid="recipe-category">
+              Categoria:
+              {' '}
+              { recipeDetails.strCategory }
+            </p>
+          )}
+        <button type="button" data-testid="share-btn">
+          <img src={ shareIcon } alt="Share icon" />
+        </button>
+        <button type="button" data-testid="favorite-btn">
+          <img src={ whiteHeartIcon } alt="Favorite Icon" />
+        </button>
+      </section>
+
       <p data-testid="instructions">
         Instruções:
         { recipeDetails.strInstructions }
