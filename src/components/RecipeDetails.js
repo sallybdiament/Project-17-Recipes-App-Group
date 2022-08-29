@@ -10,6 +10,7 @@ import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import { fetchRecipeDetails, fetchRecommendedRecipes } from '../services/fetchDetailsAPI';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 import '../styles/RecipeDetails.css';
 import '@splidejs/react-splide/css';
 
@@ -25,6 +26,7 @@ export default function RecipeDetails({ type }) {
   const [startBtnIsEnable, setStartBtnIsEnable] = useState(true);
   const [isInProgress, setIsInProgress] = useState(false);
   const [show, setShow] = useState(false);
+  const [isFavorited, setFavorited] = useState(false);
   const target = useRef(null);
 
   const imagePlaceHolder = type === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
@@ -64,6 +66,13 @@ export default function RecipeDetails({ type }) {
     setIsInProgress(recipeIsInProgress);
   }, [id, type]);
 
+  const setFavoriteState = useCallback(() => {
+    const favoriteRecipesStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const isFavorite = favoriteRecipesStorage
+    && favoriteRecipesStorage.some((recipe) => recipe.id === id);
+    setFavorited(isFavorite);
+  }, [id]);
+
   useEffect(() => {
     getRecipeDetails();
     getRecommendedRecipes();
@@ -73,6 +82,10 @@ export default function RecipeDetails({ type }) {
     getRecipeDetails, getRecommendedRecipes,
     startBtnIsEnableFunc, continueRecipeBtnVerify,
   ]);
+
+  useEffect(() => {
+    setFavoriteState();
+  }, []);
 
   const onCopy = () => {
     copy(`http://localhost:3000${url}`);
@@ -98,6 +111,15 @@ export default function RecipeDetails({ type }) {
       ? [...favoriteRecipes, newFavoriteRecipeObj]
       : [newFavoriteRecipeObj];
     localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipesNewArray));
+    setFavorited(true);
+  };
+
+  const removeFromFavorites = () => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const favoriteRecipesNewArray = favoriteRecipes && favoriteRecipes
+      .filter((recipe) => recipe.id !== id);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipesNewArray));
+    setFavorited(false);
   };
 
   return (
@@ -132,11 +154,23 @@ export default function RecipeDetails({ type }) {
           </Tooltip>
         </Overlay>
         <Button
-          variant="outline-danger"
-          onClick={ () => addToFavorites() }
-          data-testid="favorite-btn"
+          variant="light"
+          onClick={ isFavorited ? () => removeFromFavorites() : () => addToFavorites() }
         >
-          <img src={ whiteHeartIcon } alt="Favorite Icon" />
+          {isFavorited
+            ? (
+              <img
+                src={ blackHeartIcon }
+                alt="Favorite Icon"
+                data-testid="favorite-btn"
+              />
+            )
+            : (
+              <img
+                src={ whiteHeartIcon }
+                alt="Favorite Icon"
+                data-testid="favorite-btn"
+              />)}
         </Button>
       </section>
 
