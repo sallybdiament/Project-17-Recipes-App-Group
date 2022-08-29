@@ -34,6 +34,7 @@ function Login() {
     localStorage.setItem('inProgressRecipes', JSON.stringify({
       cocktails: {}, meals: {},
     }));
+    localStorage.setItem('favoriteRecipes', JSON.stringify([]));
     history.push('/foods');
   }
 

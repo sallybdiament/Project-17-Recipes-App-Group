@@ -79,6 +79,27 @@ export default function RecipeDetails({ type }) {
     setShow(!show);
   };
 
+  const addToFavorites = () => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const {
+      [imagePlaceHolder]: image, [namePlaceHolder]: name, strCategory,
+    } = recipeDetails;
+
+    const newFavoriteRecipeObj = {
+      id,
+      type: type === 'drinks' ? 'drink' : 'food',
+      nationality: type === 'drinks' ? '' : recipeDetails.strArea,
+      category: strCategory,
+      alcoholicOrNot: recipeDetails.strAlcoholic ? recipeDetails.strAlcoholic : '',
+      name,
+      image,
+    };
+    const favoriteRecipesNewArray = favoriteRecipes
+      ? [...favoriteRecipes, newFavoriteRecipeObj]
+      : [newFavoriteRecipeObj];
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipesNewArray));
+  };
+
   return (
     <div className="details">
       <img
@@ -110,9 +131,13 @@ export default function RecipeDetails({ type }) {
             Link copied!
           </Tooltip>
         </Overlay>
-        <button type="button" data-testid="favorite-btn">
+        <Button
+          variant="outline-danger"
+          onClick={ () => addToFavorites() }
+          data-testid="favorite-btn"
+        >
           <img src={ whiteHeartIcon } alt="Favorite Icon" />
-        </button>
+        </Button>
       </section>
 
       <p data-testid="instructions">
