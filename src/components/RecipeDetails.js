@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { string } from 'prop-types';
 import Button from 'react-bootstrap/Button';
@@ -12,7 +13,6 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import '../styles/RecipeDetails.css';
-import '@splidejs/react-splide/css';
 
 const copy = require('clipboard-copy');
 
