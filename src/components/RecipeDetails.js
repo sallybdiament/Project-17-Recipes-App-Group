@@ -1,33 +1,28 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { string } from 'prop-types';
-import Button from 'react-bootstrap/Button';
-import Overlay from 'react-bootstrap/Overlay';
-import Tooltip from 'react-bootstrap/Tooltip';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import { fetchRecipeDetails, fetchRecommendedRecipes } from '../services/fetchDetailsAPI';
-import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
+
 import '../styles/RecipeDetails.css';
+import ShareButton from './ShareButton';
+import AppContext from '../context/AppContext';
+import FavoriteButton from './FavoriteButton';
 
-const copy = require('clipboard-copy');
-
-export default function RecipeDetails({ type }) {
+export default function RecipeDetails() {
   const { params: { id }, url } = useRouteMatch();
+  const { pathname } = useLocation();
+  const type = pathname.includes('drinks') ? 'drinks' : 'meals';
+
   const history = useHistory();
-  const [recipeDetails, setRecipeDetails] = useState({});
+  const { recipeDetails, setRecipeDetails } = useContext(AppContext);
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [recommendedRecipes, setRecommendedRecipes] = useState([]);
   const [startBtnIsEnable, setStartBtnIsEnable] = useState(true);
   const [isInProgress, setIsInProgress] = useState(false);
-  const [show, setShow] = useState(false);
-  const [isFavorited, setFavorited] = useState(false);
-  const target = useRef(null);
 
   const imagePlaceHolder = type === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
   const namePlaceHolder = type === 'drinks' ? 'strDrink' : 'strMeal';
@@ -66,13 +61,6 @@ export default function RecipeDetails({ type }) {
     setIsInProgress(recipeIsInProgress);
   }, [id, type]);
 
-  const setFavoriteState = useCallback(() => {
-    const favoriteRecipesStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    const isFavorite = favoriteRecipesStorage
-    && favoriteRecipesStorage.some((recipe) => recipe.id === id);
-    setFavorited(isFavorite);
-  }, [id]);
-
   useEffect(() => {
     getRecipeDetails();
     getRecommendedRecipes();
@@ -82,45 +70,6 @@ export default function RecipeDetails({ type }) {
     getRecipeDetails, getRecommendedRecipes,
     startBtnIsEnableFunc, continueRecipeBtnVerify,
   ]);
-
-  useEffect(() => {
-    setFavoriteState();
-  }, []);
-
-  const onCopy = () => {
-    copy(`http://localhost:3000${url}`);
-    setShow(!show);
-  };
-
-  const addToFavorites = () => {
-    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    const {
-      [imagePlaceHolder]: image, [namePlaceHolder]: name, strCategory,
-    } = recipeDetails;
-
-    const newFavoriteRecipeObj = {
-      id,
-      type: type === 'drinks' ? 'drink' : 'food',
-      nationality: type === 'drinks' ? '' : recipeDetails.strArea,
-      category: strCategory,
-      alcoholicOrNot: recipeDetails.strAlcoholic ? recipeDetails.strAlcoholic : '',
-      name,
-      image,
-    };
-    const favoriteRecipesNewArray = favoriteRecipes
-      ? [...favoriteRecipes, newFavoriteRecipeObj]
-      : [newFavoriteRecipeObj];
-    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipesNewArray));
-    setFavorited(true);
-  };
-
-  const removeFromFavorites = () => {
-    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    const favoriteRecipesNewArray = favoriteRecipes && favoriteRecipes
-      .filter((recipe) => recipe.id !== id);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipesNewArray));
-    setFavorited(false);
-  };
 
   return (
     <div className="details">
@@ -140,38 +89,8 @@ export default function RecipeDetails({ type }) {
               { recipeDetails.strCategory }
             </p>
           )}
-        <Button
-          ref={ target }
-          variant="outline-success"
-          data-testid="share-btn"
-          onClick={ () => onCopy() }
-        >
-          <img src={ shareIcon } alt="Share icon" />
-        </Button>
-        <Overlay target={ target.current } show={ show } placement="bottom">
-          <Tooltip id="overlay-example">
-            Link copied!
-          </Tooltip>
-        </Overlay>
-        <Button
-          variant="light"
-          onClick={ isFavorited ? () => removeFromFavorites() : () => addToFavorites() }
-        >
-          {isFavorited
-            ? (
-              <img
-                src={ blackHeartIcon }
-                alt="Favorite Icon"
-                data-testid="favorite-btn"
-              />
-            )
-            : (
-              <img
-                src={ whiteHeartIcon }
-                alt="Favorite Icon"
-                data-testid="favorite-btn"
-              />)}
-        </Button>
+        <ShareButton />
+        <FavoriteButton />
       </section>
 
       <p data-testid="instructions">
@@ -180,6 +99,10 @@ export default function RecipeDetails({ type }) {
       </p>
       <table>
         <tbody>
+          <tr>
+            <th>Ingredient</th>
+            <th>Measure</th>
+          </tr>
           {ingredients.map((ingredient, index) => (
             <tr key={ index } data-testid={ `${index}-ingredient-name-and-measure` }>
               <td>{ ingredient }</td>
@@ -243,7 +166,3 @@ export default function RecipeDetails({ type }) {
     </div>
   );
 }
-
-RecipeDetails.propTypes = {
-  type: string.isRequired,
-};
