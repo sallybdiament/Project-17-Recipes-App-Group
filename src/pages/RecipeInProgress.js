@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useLocation, useRouteMatch } from 'react-router-dom';
+import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { fetchRecipeDetails } from '../services/fetchDetailsAPI';
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import AppContext from '../context/AppContext';
@@ -15,6 +15,7 @@ const inProgressRecipesDefault = {
 export default function RecipeInProgress() {
   const { params: { id } } = useRouteMatch();
   const { pathname } = useLocation();
+  const history = useHistory();
   const { recipeDetails, setRecipeDetails } = useContext(AppContext);
 
   const [ingredients, setIngredients] = useState([]);
@@ -141,6 +142,7 @@ export default function RecipeInProgress() {
             type="button"
             data-testid="finish-recipe-btn"
             disabled={ finishBtnIsEnabled }
+            onClick={ () => history.push('/done-recipes') }
           >
             Finish
           </button>
