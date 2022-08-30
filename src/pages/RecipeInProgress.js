@@ -20,30 +20,39 @@ export default function RecipeInProgress() {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [inProgressRecipes, setInProgressRecipes] = useState(inProgressRecipesDefault);
-  const [recipeType, setRecipeType] = useState('');
+  const [finishBtnIsEnabled, setFinishBtn] = useState(true);
 
-  const type = pathname.includes('drinks') ? 'drinks' : 'meals';
+  const typePage = pathname.includes('drinks') ? 'drinks' : 'meals';
+  const recipeType = pathname.includes('drinks') ? 'cocktails' : 'meals';
+
+  const toggleFinishBtn = (inProgressObj, ingredientsList) => {
+    const arrayOfIngredients = inProgressObj[recipeType][id]
+      ? inProgressObj[recipeType][id]
+      : [];
+    const allIngredientsIsDone = arrayOfIngredients
+     && arrayOfIngredients.length === ingredientsList.length;
+    console.log(allIngredientsIsDone);
+    setFinishBtn(!allIngredientsIsDone);
+  };
 
   const getRecipeDetails = useCallback(async () => {
-    const detailsData = await fetchRecipeDetails(type, id);
+    const detailsData = await fetchRecipeDetails(typePage, id);
     const ingredientsList = ingredientsAndMeasuresList(detailsData, 'strIngredient');
     const measuresList = ingredientsAndMeasuresList(detailsData, 'strMeasure');
+    const inProgressStorage = await JSON.parse(localStorage.getItem('inProgressRecipes'));
 
-    setRecipeType(type === 'drinks' ? 'cocktails' : 'meals');
     setIngredients(ingredientsList);
     setMeasures(measuresList);
     setRecipeDetails(detailsData);
-  }, []);
-
-  const getRecipesInProgress = useCallback(() => {
-    const inProgressStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (inProgressStorage) setInProgressRecipes(inProgressStorage);
+    if (inProgressStorage) {
+      setInProgressRecipes(inProgressStorage);
+      toggleFinishBtn(inProgressStorage, ingredientsList);
+    }
   }, []);
 
   useEffect(() => {
     getRecipeDetails();
-    getRecipesInProgress();
-  }, [getRecipeDetails, getRecipesInProgress]);
+  }, []);
 
   const isIngredientChecked = (ingredient) => inProgressRecipes[recipeType][id]
     && inProgressRecipes[recipeType][id].includes(ingredient);
@@ -56,6 +65,7 @@ export default function RecipeInProgress() {
           [id]: [...inProgressRecipes[recipeType][id], ingredient],
         },
       };
+      toggleFinishBtn(newInProgressObj, ingredients);
       setInProgressRecipes(newInProgressObj);
       localStorage.setItem('inProgressRecipes', JSON.stringify(newInProgressObj));
     } else {
@@ -66,6 +76,7 @@ export default function RecipeInProgress() {
         },
       };
       setInProgressRecipes(newInProgressObj);
+      toggleFinishBtn(newInProgressObj, ingredients);
       localStorage.setItem('inProgressRecipes', JSON.stringify(newInProgressObj));
     }
   };
@@ -80,11 +91,12 @@ export default function RecipeInProgress() {
       },
     };
     setInProgressRecipes(newInProgressObj);
+    toggleFinishBtn(newInProgressObj, ingredients);
     localStorage.setItem('inProgressRecipes', JSON.stringify(newInProgressObj));
   };
 
-  const namePlaceHolder = type === 'drinks' ? 'strDrink' : 'strMeal';
-  const imagePlaceHolder = type === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
+  const namePlaceHolder = typePage === 'drinks' ? 'strDrink' : 'strMeal';
+  const imagePlaceHolder = typePage === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
 
   const {
     [namePlaceHolder]: name, [imagePlaceHolder]: image, strCategory, strInstructions,
@@ -125,7 +137,13 @@ export default function RecipeInProgress() {
             </tbody>
           </table>
           <p data-testid="instructions">{ strInstructions }</p>
-          <button type="button" data-testid="finish-recipe-btn">Finish</button>
+          <button
+            type="button"
+            data-testid="finish-recipe-btn"
+            disabled={ finishBtnIsEnabled }
+          >
+            Finish
+          </button>
         </div>
       )}
     </div>
