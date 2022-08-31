@@ -3,10 +3,10 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
+import { Button, Image, Table } from 'react-bootstrap';
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import { fetchRecipeDetails, fetchRecommendedRecipes } from '../services/fetchDetailsAPI';
 
-import '../styles/RecipeDetails.css';
 import ShareButton from './ShareButton';
 import AppContext from '../context/AppContext';
 import FavoriteButton from './FavoriteButton';
@@ -72,14 +72,23 @@ export default function RecipeDetails() {
   ]);
 
   return (
-    <div className="details">
-      <img
+    <div className="pl-3 pr-3 mb-4">
+      <Image
+        className="mt-3 mb-4"
+        thumbnail
+        rounded
         src={ recipeDetails[imagePlaceHolder] }
         alt={ recipeDetails[namePlaceHolder] }
         data-testid="recipe-photo"
       />
       <section>
-        <h1 data-testid="recipe-title">{ recipeDetails[namePlaceHolder] }</h1>
+        <section className="d-flex justify-content-between">
+          <h1 data-testid="recipe-title">{ recipeDetails[namePlaceHolder] }</h1>
+          <section className="d-flex align-items-center">
+            <ShareButton />
+            <FavoriteButton />
+          </section>
+        </section>
         {type === 'drinks'
           ? <p data-testid="recipe-category">{recipeDetails.strAlcoholic}</p>
           : (
@@ -89,15 +98,12 @@ export default function RecipeDetails() {
               { recipeDetails.strCategory }
             </p>
           )}
-        <ShareButton />
-        <FavoriteButton />
       </section>
-
-      <p data-testid="instructions">
-        Instruções:
+      <section className="mb-4" data-testid="instructions">
+        <h3>Instruções</h3>
         { recipeDetails.strInstructions }
-      </p>
-      <table>
+      </section>
+      <Table striped bordered hover>
         <tbody>
           <tr>
             <th>Ingredient</th>
@@ -110,7 +116,7 @@ export default function RecipeDetails() {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
       { recipeDetails.strYoutube && (
         <iframe
           title="Recipe video"
@@ -143,20 +149,20 @@ export default function RecipeDetails() {
           ))}
       </Splide>
       { startBtnIsEnable && (
-        <button
+        <Button
           type="button"
-          className="start-recipe-btn"
+          className="b"
           onClick={ () => history.push(`${url}/in-progress`) }
           data-testid="start-recipe-btn"
         >
           Start Recipe
 
-        </button>
+        </Button>
       )}
       { isInProgress && (
         <button
           type="button"
-          className="start-recipe-btn"
+          className="position-fixed"
           data-testid="start-recipe-btn"
         >
           Continue Recipe

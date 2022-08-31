@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { Image } from 'react-bootstrap';
+
 function Login() {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
-
-  const [disabled, setDisabled] = useState(true);
-
   const history = useHistory();
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
     const emailValido = /\S+@\S+\.\S+/;
@@ -39,43 +38,46 @@ function Login() {
   }
 
   return (
-    <div>
-      <form>
-        <label
-          htmlFor="email-input"
-        >
-          e-mail:
-          <input
+    <div className="login-container">
+      <Form className="d-flex flex-column p-4 justify-content-center vh-100">
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          {/* <Form.Label>Email address</Form.Label> */}
+          <Form.Control
             type="email"
-            data-testid="email-input"
-            id="email-input"
             name="email"
+            id="email-input"
+            placeholder="Email adress"
+            data-testid="email-input"
             value={ form.email }
-            onChange={ handleChange }
+            onChange={ (e) => handleChange(e) }
           />
-        </label>
-        <label
-          htmlFor="passoword-input"
-        >
-          senha:
-          <input
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          {/* <Form.Label>Password</Form.Label> */}
+          <Form.Control
             type="password"
-            data-testid="password-input"
-            id="passoword-input"
             name="password"
+            id="passoword-input"
+            placeholder="Password"
+            data-testid="password-input"
             value={ form.password }
-            onChange={ handleChange }
+            onChange={ (e) => handleChange(e) }
           />
-        </label>
-        <button
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Remeber me" />
+        </Form.Group>
+        <Button
+          className=""
+          variant="success"
           type="button"
           data-testid="login-submit-btn"
           disabled={ disabled }
-          onClick={ submeter }
+          onClick={ () => submeter() }
         >
           Enter
-        </button>
-      </form>
+        </Button>
+      </Form>
     </div>
   );
 }

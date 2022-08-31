@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { Button, Image, Table } from 'react-bootstrap';
 import { fetchRecipeDetails } from '../services/fetchDetailsAPI';
 import ingredientsAndMeasuresList from '../helpers/detailsDataNormalizer';
 import AppContext from '../context/AppContext';
@@ -107,12 +108,23 @@ export default function RecipeInProgress() {
     <div>
       {recipeDetails && (
         <div>
-          <h1 data-testid="recipe-title">{ name }</h1>
-          <img src={ image } alt={ name } data-testid="recipe-photo" />
-          <ShareButton />
-          <FavoriteButton />
-          <h3 data-testid="recipe-category">{ strCategory }</h3>
-          <table>
+          <Image
+            className="mt-3 mb-4"
+            thumbnail
+            rounded
+            src={ image }
+            alt={ name }
+            data-testid="recipe-photo"
+          />
+          <section className="d-flex justify-content-between">
+            <h1 data-testid="recipe-title">{ name }</h1>
+            <section className="d-flex align-items-center">
+              <ShareButton />
+              <FavoriteButton />
+            </section>
+          </section>
+          <h4 data-testid="recipe-category">{ strCategory }</h4>
+          <Table striped bordered hover>
             <tbody>
               <tr>
                 <th>Ingredient</th>
@@ -136,16 +148,19 @@ export default function RecipeInProgress() {
                 </tr>
               ))}
             </tbody>
-          </table>
-          <p data-testid="instructions">{ strInstructions }</p>
-          <button
+          </Table>
+          <section className="mb-4" data-testid="instructions">
+            <h3>Instruções</h3>
+            { recipeDetails.strInstructions }
+          </section>
+          <Button
             type="button"
             data-testid="finish-recipe-btn"
             disabled={ finishBtnIsEnabled }
             onClick={ () => history.push('/done-recipes') }
           >
             Finish
-          </button>
+          </Button>
         </div>
       )}
     </div>

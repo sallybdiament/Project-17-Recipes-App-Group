@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { string } from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
+import { Button, Form, FormFloating } from 'react-bootstrap';
 import AppContext from '../context/AppContext';
 import foodAPI from '../services/foodAPI';
 
@@ -102,7 +103,8 @@ function SearchBar({ pageName }) {
   return (
     <div className="search-container">
       <section className="search-bar-container">
-        <input
+        <Form.Control
+          size="sm"
           className="search-bar"
           name="searchInput"
           data-testid="search-input"
@@ -111,50 +113,44 @@ function SearchBar({ pageName }) {
         />
       </section>
       <section className="search-btn-container">
-        <label htmlFor="radioSearchBtn">
-          <input
-            type="radio"
-            id="radioSearchBtn"
-            name="searchBar"
-            value="ingredient"
-            onChange={ handleChange }
-            data-testid="ingredient-search-radio"
-          />
-          {' '}
-          Ingredient
-        </label>
-        <label htmlFor="radioSearchBtn">
-          <input
-            type="radio"
-            id="radioSearchBtn"
-            name="searchBar"
-            value="name"
-            onChange={ handleChange }
-            data-testid="name-search-radio"
-          />
-          {' '}
-          Name
-        </label>
-        <label htmlFor="radioSearchBtn">
-          <input
-            type="radio"
-            id="radioSearchBtn"
-            name="searchBar"
-            value="firstLetter"
-            onChange={ handleChange }
-            data-testid="first-letter-search-radio"
-          />
-          {' '}
-          First letter
-        </label>
-        <button
-          className="search-btn"
+        <Form>
+          
+        </Form>
+        <Form.Check
+          id="radioSearchBtn"
+          label="Ingredient"
+          name="searchBar"
+          value="ingredient"
+          onChange={ handleChange }
+          data-testid="ingredient-search-radio"
+        />
+        <Form.Check
+          id="radioSearchBtn"
+          name="searchBar"
+          label="Name"
+          value="name"
+          onChange={ handleChange }
+          data-testid="name-search-radio"
+        />
+        <Form.Check
+          id="radioSearchBtn"
+          name="searchBar"
+          label="First letter"
+          value="firstLetter"
+          onChange={ handleChange }
+          data-testid="first-letter-search-radio"
+        />
+      </section>
+      <section style={ { width: '100%' } }>
+        <Button
+          className="w-100"
+          variant="success"
           type="button"
           data-testid="exec-search-btn"
           onClick={ handleClick }
         >
           Search
-        </button>
+        </Button>
       </section>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { Button, ButtonGroup, Card, CardGroup } from 'react-bootstrap';
 
 export default function Recipes({ type }) {
   const [recipes, setRecipes] = useState([]);
@@ -9,6 +10,8 @@ export default function Recipes({ type }) {
   const [recipeName, setRecipeName] = useState('');
   const [categories, setCategories] = useState([]);
   const [isFilterActive, toggleFilter] = useState({});
+
+  const history = useHistory();
 
   const fetchAPIs = () => {
     let recipesUrl;
@@ -75,43 +78,66 @@ export default function Recipes({ type }) {
   };
 
   return (
-    <div>
-      {categories.map((category, index) => (
-        <button
-          key={ index }
-          type="button"
-          data-testid={ `${category}-category-filter` }
-          onClick={ () => filterRecipes(category) }
-        >
-          {category}
-        </button>
-      ))}
-      <button
-        type="button"
-        data-testid="All-category-filter"
-        onClick={ fetchAPIs }
+    <div style={ { padding: '20px 0 90px 0' } }>
+      <ButtonGroup
+        size="sm"
+        className="d-flex flex-wrap justify-content-center ml-2 mr-2 mb-3"
       >
-        All
-      </button>
-      {recipes.map((recipe, index) => {
-        let link;
-        if (type === 'meals') link = '/foods/';
-        else link = '/drinks/';
-        return (
-          <Link
-            to={ `${link}${recipe[recipeId]}` }
-            key={ recipe[recipeId] }
-            data-testid={ `${index}-recipe-card` }
+        {categories.map((category, index) => (
+          <Button
+            variant="outline-success"
+            key={ index }
+            type="button"
+            data-testid={ `${category}-category-filter` }
+            onClick={ () => filterRecipes(category) }
           >
-            <h1 data-testid={ `${index}-card-name` }>{recipe[recipeName]}</h1>
-            <img
-              data-testid={ `${index}-card-img` }
-              alt={ recipe[recipeName] }
-              src={ recipe[recipeImage] }
-            />
-          </Link>
-        );
-      })}
+            {category}
+          </Button>
+        ))}
+        <Button
+          type="button"
+          variant="outline-success"
+          data-testid="All-category-filter"
+          onClick={ fetchAPIs }
+        >
+          All
+        </Button>
+      </ButtonGroup>
+      <CardGroup className="d-flex flex-wrap justify-content-center ml-2 mr-2">
+        {recipes.map((recipe, index) => {
+          let link;
+          if (type === 'meals') link = '/foods/';
+          else link = '/drinks/';
+          return (
+            <Card
+              className="m-2"
+              key={ index }
+              data-testid={ `${index}-recipe-card` }
+              style={ { width: '9rem' } }
+            >
+              <Card.Img
+                alt={ recipe[recipeName] }
+                src={ recipe[recipeImage] }
+                data-testid={ `${index}-card-img` }
+              />
+              <Card.Body className="p-3">
+                <Card.Title
+                  data-testid={ `${index}-card-name` }
+                >
+                  {recipe[recipeName]}
+                </Card.Title>
+                <Button
+                  size="sm"
+                  variant="success"
+                  onClick={ () => history.push(`${link}${recipe[recipeId]}`) }
+                >
+                  Details
+                </Button>
+              </Card.Body>
+            </Card>
+          );
+        })}
+      </CardGroup>
     </div>
   );
 }
