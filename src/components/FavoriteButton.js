@@ -23,6 +23,7 @@ function FavoriteButton() {
 
   useEffect(() => {
     setFavoriteState();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addToFavorites = () => {
