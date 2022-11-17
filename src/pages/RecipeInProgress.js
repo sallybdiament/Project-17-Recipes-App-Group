@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { Button, Image, Table } from 'react-bootstrap';
@@ -50,6 +51,7 @@ export default function RecipeInProgress() {
       setInProgressRecipes(inProgressStorage);
       toggleFinishBtn(inProgressStorage, ingredientsList);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -101,7 +103,8 @@ export default function RecipeInProgress() {
   const imagePlaceHolder = typePage === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
 
   const {
-    [namePlaceHolder]: name, [imagePlaceHolder]: image, strCategory, strInstructions,
+    [namePlaceHolder]: name, [imagePlaceHolder]: image, strCategory,
+    // strInstructions,
   } = recipeDetails;
 
   return (

@@ -4,3 +4,5 @@ cypress/*
 coverage/*
 src/tests
 root/src/components/*.js
+**/*.js
+src/*.js

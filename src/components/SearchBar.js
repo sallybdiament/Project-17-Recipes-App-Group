@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { string } from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
-import { Button, Form, FormFloating } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import AppContext from '../context/AppContext';
 import foodAPI from '../services/foodAPI';
 
@@ -113,9 +113,8 @@ function SearchBar({ pageName }) {
         />
       </section>
       <section className="search-btn-container">
-        <Form>
-          
-        </Form>
+        {/* <Form
+        </Form> */}
         <Form.Check
           id="radioSearchBtn"
           label="Ingredient"

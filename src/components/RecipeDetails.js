@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
@@ -15,7 +16,6 @@ export default function RecipeDetails() {
   const { params: { id }, url } = useRouteMatch();
   const { pathname } = useLocation();
   const type = pathname.includes('drinks') ? 'drinks' : 'meals';
-
   const history = useHistory();
   const { recipeDetails, setRecipeDetails } = useContext(AppContext);
   const [ingredients, setIngredients] = useState([]);
@@ -23,7 +23,6 @@ export default function RecipeDetails() {
   const [recommendedRecipes, setRecommendedRecipes] = useState([]);
   const [startBtnIsEnable, setStartBtnIsEnable] = useState(true);
   const [isInProgress, setIsInProgress] = useState(false);
-
   const imagePlaceHolder = type === 'drinks' ? 'strDrinkThumb' : 'strMealThumb';
   const namePlaceHolder = type === 'drinks' ? 'strDrink' : 'strMeal';
 
